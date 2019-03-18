@@ -1,0 +1,48 @@
+Python 3.7.1 (v3.7.1:260ec2c36a, Oct 20 2018, 14:05:16) [MSC v.1915 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+>>> a_d = {'name': 'Aditya', 'email':'sp.aditya@gmail.com'}
+>>> type(a_d)
+<class 'dict'>
+>>> len(a_d)
+2
+>>> a_d[0]
+Traceback (most recent call last):
+  File "<pyshell#3>", line 1, in <module>
+    a_d[0]
+KeyError: 0
+>>> a_d['name']
+'Aditya'
+>>> a_d['email']
+'sp.aditya@gmail.com'
+>>> a_d['city']
+Traceback (most recent call last):
+  File "<pyshell#6>", line 1, in <module>
+    a_d['city']
+KeyError: 'city'
+>>> a_d['city']='Bangalore'
+>>> a_d
+{'name': 'Aditya', 'email': 'sp.aditya@gmail.com', 'city': 'Bangalore'}
+>>> a_d['city']='Big Apple'
+>>> a_d
+{'name': 'Aditya', 'email': 'sp.aditya@gmail.com', 'city': 'Big Apple'}
+>>> a_d.keys()
+dict_keys(['name', 'email', 'city'])
+>>> a_d.values()
+dict_values(['Aditya', 'sp.aditya@gmail.com', 'Big Apple'])
+>>> 
+>>> 
+>>> 
+>>> a_d['phone']=['1203801823','129308102']
+>>> a_d
+{'name': 'Aditya', 'email': 'sp.aditya@gmail.com', 'city': 'Big Apple', 'phone': ['1203801823', '129308102']}
+>>> a_d['phone']
+['1203801823', '129308102']
+>>> a_d['phone'][1]
+'129308102'
+>>> a_d['address']={'home': 'asdlkj asljf lsjf', 'work':'asdklfj welrj sdlf'}
+>>> a_d
+{'name': 'Aditya', 'email': 'sp.aditya@gmail.com', 'city': 'Big Apple', 'phone': ['1203801823', '129308102'], 'address': {'home': 'asdlkj asljf lsjf', 'work': 'asdklfj welrj sdlf'}}
+>>> a_d['address']['work']
+'asdklfj welrj sdlf'
+>>> #JSON
+>>> 
