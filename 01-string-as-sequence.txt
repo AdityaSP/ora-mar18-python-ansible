@@ -1,0 +1,73 @@
+>>> s = 'Hello World'
+>>> #Sequence
+>>> len(s)
+11
+>>> s[0]
+'H'
+>>> s[10]
+'d'
+>>> s[11]
+Traceback (most recent call last):
+  File "<pyshell#5>", line 1, in <module>
+    s[11]
+IndexError: string index out of range
+>>> s[-1]
+'d'
+>>> s[-2]
+'l'
+>>> s[-11]
+'H'
+>>> s[-12]
+Traceback (most recent call last):
+  File "<pyshell#9>", line 1, in <module>
+    s[-12]
+IndexError: string index out of range
+>>> s
+'Hello World'
+>>> s[0:5]
+'Hello'
+>>> s[5:1000]
+' World'
+>>> s[-5:-1]
+'Worl'
+>>> s[0:5:-1]
+''
+>>> s[0:5:-1]
+''
+>>> s[5:0:-1]
+' olle'
+>>> s
+'Hello World'
+>>> s[11:0:-1]
+'dlroW olle'
+>>> s[-1:-11:-1]
+'dlroW olle'
+>>> s[-1:-12:-1]
+'dlroW olleH'
+>>> s[-1:-len(s)-1:-1]
+'dlroW olleH'
+>>> s ='Hello US'
+>>> s[-1:-len(s)-1:-1]
+'SU olleH'
+>>> s[5:1000]
+' US'
+>>> s[5:]
+' US'
+>>> s[0:5]
+'Hello'
+>>> s[:5]
+'Hello'
+>>> s[:]
+'Hello US'
+>>> s[::-1]
+'SU olleH'
+>>> s[-1:-len(s)-1:-1]
+'SU olleH'
+>>> s = '0123456789'
+>>> s[0:5:1]
+'01234'
+>>> s[0:7:2]
+'0246'
+>>> s[::2]
+'02468'
+>>> 
