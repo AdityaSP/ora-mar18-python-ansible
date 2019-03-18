@@ -1,0 +1,62 @@
+Python 3.7.1 (v3.7.1:260ec2c36a, Oct 20 2018, 14:05:16) [MSC v.1915 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+>>> fp = 'C:\\Users\\Dell lap\\Desktop\\Python\\mar18\\f1.txt'
+>>> fp = 'C:/Users/Dell lap/Desktop/Python/mar18/f1.txt'
+>>> fp = r'C:\Users\Dell lap\Desktop\Python\mar18\f1.txt'
+>>> fh = open(fp, 'wt')
+>>> fh.write('Some text')
+9
+>>> fh.close()
+>>> fh.write('second line')
+Traceback (most recent call last):
+  File "<pyshell#6>", line 1, in <module>
+    fh.write('second line')
+ValueError: I/O operation on closed file.
+>>> fh = open(fp, 'at')
+>>> fh.write('\nsecond line')
+12
+>>> fh.close()
+>>> fh= open(fp, 'rt')
+>>> fh.write('\nsecond line')
+Traceback (most recent call last):
+  File "<pyshell#11>", line 1, in <module>
+    fh.write('\nsecond line')
+io.UnsupportedOperation: not writable
+>>> s = fh.read()
+>>> type(s)
+<class 'str'>
+>>> s
+'Some text\nsecond line'
+>>> s1 = fh.read()
+>>> s1
+''
+>>> fh.seek(0)
+0
+>>> s1 = fh.read()
+>>> s1
+'Some text\nsecond line'
+>>> fh.seek(0)
+0
+>>> li = fh.readlines()
+>>> li
+['Some text\n', 'second line']
+>>> for line in li:
+	print(line)
+
+	
+Some text
+
+second line
+>>> fh.seek(0)
+0
+>>> 
+>>> 
+>>> for line in fh:
+	print(line)
+
+	
+Some text
+
+second line
+>>> fh.close()
+>>> 
