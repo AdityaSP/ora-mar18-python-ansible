@@ -1,0 +1,48 @@
+Python 3.7.1 (v3.7.1:260ec2c36a, Oct 20 2018, 14:05:16) [MSC v.1915 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+>>> a = 9
+>>> if a < 10:
+	print("Sigle digit")
+
+	
+Sigle digit
+>>> a = 10
+>>> if a < 10:
+	print("Sigle digit")
+
+	
+>>> if a < 10:
+	print("Sigle digit")
+else:
+	print("May be double digit")
+
+	
+May be double digit
+>>> if a < 10:
+	print("Sigle digit")
+elif a < 100:
+	print("Double digit")
+else:
+	print("May be 2+ digits")
+
+	
+Double digit
+>>> x = 4
+>>> y = 10
+>>> x < y
+True
+>>> x < y and y < 100
+True
+>>> x < y or y < 100
+True
+>>> not x < y
+False
+>>> s = 'aaabab'
+>>> 'a' in s
+True
+>>> ip = '182.12.45.12'
+>>> '.' in ip
+True
+>>> ip.count('.')
+3
+>>> 
