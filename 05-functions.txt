@@ -1,0 +1,88 @@
+Python 3.7.1 (v3.7.1:260ec2c36a, Oct 20 2018, 14:05:16) [MSC v.1915 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+>>> def sayhi():
+	print("Hi")
+
+	
+>>> sayhi()
+Hi
+>>> def sayhi(name):
+	print("Hi", name)
+
+	
+>>> sayhi()
+Traceback (most recent call last):
+  File "<pyshell#7>", line 1, in <module>
+    sayhi()
+TypeError: sayhi() missing 1 required positional argument: 'name'
+>>> sayhi('Aditya')
+Hi Aditya
+>>> def add(x, y):
+	print(x + y)
+
+	
+>>> add(3,4)
+7
+>>> z = add(3,4)
+7
+>>> z
+>>> z
+>>> def add(x, y):
+	return x + y
+
+>>> add(3,4)
+7
+>>> z = add(3,4)
+>>> z
+7
+>>> add(5,6) * 30
+330
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> len.__doc__
+'Return the number of items in a container.'
+>>> type.__doc__
+"type(object_or_name, bases, dict)\ntype(object) -> the object's type\ntype(name, bases, dict) -> a new type"
+>>> print(type.__doc__)
+type(object_or_name, bases, dict)
+type(object) -> the object's type
+type(name, bases, dict) -> a new type
+>>> sayhi.__doc__
+>>> add.__doc__
+>>> def add(x, y):
+	"add(x,y) -> number, adds up two numbers"
+	return x + y
+
+>>> add.__doc__
+'add(x,y) -> number, adds up two numbers'
+>>> 
+>>> 
+>>> 
+>>> 
+>>> def full_name(fn, ln):
+	return fn + " " + ln
+
+>>> full_name('Aditya', 'SP')
+'Aditya SP'
+>>> full_name(fn = 'Aditya', ln = 'SP')
+'Aditya SP'
+>>> full_name(ln = 'SP',fn = 'Aditya')
+'Aditya SP'
+>>> def full_name(fn, ln, title):
+	return title + "." + fn + " " + ln
+
+>>> full_name('Aditya', 'SP', 'Mr')
+'Mr.Aditya SP'
+>>> def full_name(fn, ln, title='Mr'):
+	return title + "." + fn + " " + ln
+
+>>> full_name('Aditya', 'SP')
+'Mr.Aditya SP'
+>>> full_name('Aditya', 'SP', 'Dr')
+'Dr.Aditya SP'
+>>> full_name(ln = 'SP',fn = 'Aditya')
+'Mr.Aditya SP'
+>>> 
