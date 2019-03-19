@@ -1,0 +1,21 @@
+- hosts: nodes
+  become: true
+  tasks:
+  - name: "Install apache2"
+    apt:
+      name: apache2
+      update_cache: yes
+  - name: "Start the service"
+    service:
+      name: apache2
+      enabled: yes
+      state: started
+  - name: "Change port number"
+    lineinfile:
+      dest: "/etc/apache2/ports.conf"
+      regexp: "^Listen"
+      line: "Listen 8080"
+  - name: "restart apache2"
+    service:
+      name: apache2
+      state: restarted
