@@ -1,0 +1,181 @@
+login as: vagrant
+vagrant@localhost's password:
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+70 packages can be updated.
+53 updates are security updates.
+
+
+Last login: Tue Mar 19 07:43:12 2019 from 10.0.2.2
+vagrant@anscontrol:~$ ansible --version
+ansible 2.0.0.2
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = Default w/o overrides
+vagrant@anscontrol:~$ vi /etc/ansible/ansible.cfg
+vagrant@anscontrol:~$ ansible --list-hosts all
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+  hosts (0):
+vagrant@anscontrol:~$ vi /etc/ansible/ansible.cfg
+vagrant@anscontrol:~$ cat /etc/ansible/hosts
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+
+#green.example.com
+#blue.example.com
+#192.168.100.1
+#192.168.100.10
+
+# Ex 2: A collection of hosts belonging to the 'webservers' group
+
+#[webservers]
+#alpha.example.org
+#beta.example.org
+#192.168.1.100
+#192.168.1.110
+
+# If you have multiple hosts following a pattern you can specify
+# them like this:
+
+#www[001:006].example.com
+
+# Ex 3: A collection of database servers in the 'dbservers' group
+
+#[dbservers]
+#
+#db01.intranet.mydomain.net
+#db02.intranet.mydomain.net
+#10.25.1.56
+#10.25.1.57
+
+# Here's another example of host ranges, this time there are no
+# leading 0s:
+
+#db-[99:101]-node.example.com
+
+vagrant@anscontrol:~$ vi /etc/ansible/hosts
+vagrant@anscontrol:~$
+vagrant@anscontrol:~$ pwd
+/home/vagrant
+vagrant@anscontrol:~$ mkdir mar18
+vagrant@anscontrol:~$ cd mar18/
+vagrant@anscontrol:~/mar18$ ls
+vagrant@anscontrol:~/mar18$ touch hosts
+vagrant@anscontrol:~/mar18$ cp /etc/ansible/ansible.cfg .
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts
+vagrant@anscontrol:~/mar18$ vi ansible.cfg
+vagrant@anscontrol:~/mar18$ ls /home/vagrant/mar18/hosts
+/home/vagrant/mar18/hosts
+vagrant@anscontrol:~/mar18$ grep inventroy ansible.cfg
+vagrant@anscontrol:~/mar18$ grep inventory ansible.cfg
+inventory      = /home/vagrant/mar18/hosts
+# if inventory variables overlap, does the higher precedence one win
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+  hosts (0):
+vagrant@anscontrol:~/mar18$ vi hosts
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cat hosts
+[control]
+anscontrol
+[node1]
+ansnode1
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+  hosts (2):
+    anscontrol
+    ansnode1
+vagrant@anscontrol:~/mar18$ ansible --list-hosts control
+  hosts (1):
+    anscontrol
+vagrant@anscontrol:~/mar18$ vi hosts
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cat hosts
+[control]
+anscontrol
+[nodes]
+ansnode1
+vagrant@anscontrol:~/mar18$ ansible --list-hosts control
+  hosts (1):
+    anscontrol
+vagrant@anscontrol:~/mar18$ ansible --list-hosts nodes
+  hosts (1):
+    ansnode1
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+  hosts (2):
+    anscontrol
+    ansnode1
+vagrant@anscontrol:~/mar18$ vi hosts
+vagrant@anscontrol:~/mar18$ ping ansnode1
+PING ansnode1 (192.168.90.2) 56(84) bytes of data.
+^C
+--- ansnode1 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1008ms
+
+vagrant@anscontrol:~/mar18$ ping ansnode1
+PING ansnode1 (192.168.90.2) 56(84) bytes of data.
+64 bytes from ansnode1 (192.168.90.2): icmp_seq=1 ttl=64 time=0.260 ms
+64 bytes from ansnode1 (192.168.90.2): icmp_seq=2 ttl=64 time=0.282 ms
+64 bytes from ansnode1 (192.168.90.2): icmp_seq=3 ttl=64 time=0.366 ms
+^C
+--- ansnode1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 0.260/0.302/0.366/0.049 ms
+vagrant@anscontrol:~/mar18$ cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       anscontrol      anscontrol
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.90.1 anscontrol
+192.168.90.2 ansnode1
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ssh ansnode1
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Tue Mar 19 16:21:44 2019 from 10.0.2.2
+vagrant@ansnode1:~$ exit
+logout
+Connection to ansnode1 closed.
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+  hosts (2):
+    anscontrol
+    ansnode1
+vagrant@anscontrol:~/mar18$ cat hosts
+[control]
+anscontrol
+[nodes]
+ansnode1
+vagrant@anscontrol:~/mar18$ grep inventory ansible.cfg
+inventory      = /home/vagrant/mar18/hosts
+# if inventory variables overlap, does the higher precedence one win
+vagrant@anscontrol:~/mar18$
