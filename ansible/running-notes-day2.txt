@@ -233,3 +233,101 @@ vagrant@anscontrol:~/mar18$ ls
 ansible.cfg  hosts  ping.yml
 vagrant@anscontrol:~/mar18$ cp * /vagrant
 vagrant@anscontrol:~/mar18$
+
+
+--------------------------------------------------------------------------------------------------
+vagrant@anscontrol:~/mar18$ ansible-playbook file.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+TASK [Create a file] ***********************************************************
+fatal: [anscontrol]: FAILED! => {"changed": false, "failed": true, "msg": "file (/tmp/abc.txt) is absent, cannot continue", "path": "/tmp/abc.txt", "state": "absent"}
+fatal: [ansnode1]: FAILED! => {"changed": false, "failed": true, "msg": "file (/tmp/abc.txt) is absent, cannot continue", "path": "/tmp/abc.txt", "state": "absent"}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=1    changed=0    unreachable=0    failed=1
+ansnode1                   : ok=1    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18$ vi file.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook file.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+TASK [Create a file] ***********************************************************
+changed: [anscontrol]
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=2    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook file.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+TASK [Create a file] ***********************************************************
+changed: [anscontrol]
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=2    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ls -ltra /tmp/abc.txt
+-rw-rw-r-- 1 vagrant vagrant 0 Mar 19 18:24 /tmp/abc.txt
+vagrant@anscontrol:~/mar18$ date
+Tue Mar 19 18:24:43 UTC 2019
+vagrant@anscontrol:~/mar18$ vi file.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook file.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [anscontrol]
+
+TASK [Create a file] ***********************************************************
+changed: [anscontrol]
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=2    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook file.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [anscontrol]
+
+TASK [Create a file] ***********************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cat file.yml
+- hosts: all
+  tasks:
+  - name: "Create a file"
+    file:
+      path: "/tmp/abc.txt"
+      state: absent
+vagrant@anscontrol:~/mar18$ cp * /vagrant/
+vagrant@anscontrol:~/mar18$
