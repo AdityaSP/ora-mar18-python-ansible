@@ -1,10 +1,33 @@
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+  - name: "Update Cache"
+    apt:
+      cache_valid_time: 36000
+      update_cache: yes
+
+- hosts: control
+  gather_facts: no
+  become: true
+  tasks:
+  - name: "install git"
+    apt:
+      name: git
+      update_cache: no
+  - name: "Clone code"
+    git:
+      dest: "/tmp/code"
+      repo: "https://github.com/AdityaSP/htmlonly.git"
+ 
 - hosts: nodes
+  gather_facts: no
   become: true
   tasks:
   - name: "Install apache2"
     apt:
       name: apache2
-      update_cache: yes
+      update_cache: no
   - name: "Start the service"
     service:
       name: apache2
@@ -16,6 +39,10 @@
       regexp: "^Listen"
       line: "Listen 8081"
     notify: "restart apache2"
+  - name: "Deploy code"
+    copy:
+      src: "/tmp/code/mypage.html"
+      dest: "/var/www/html"
   handlers: 
   - name: "restart apache2"
     service:

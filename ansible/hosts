@@ -2,3 +2,4 @@
 anscontrol ansible_connection=local
 [nodes]
 ansnode1
+ansnode2
