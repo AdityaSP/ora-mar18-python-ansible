@@ -179,3 +179,57 @@ vagrant@anscontrol:~/mar18$ grep inventory ansible.cfg
 inventory      = /home/vagrant/mar18/hosts
 # if inventory variables overlap, does the higher precedence one win
 vagrant@anscontrol:~/mar18$
+
+
+----------------------------------------------------------
+vagrant@anscontrol:~/mar18$ cat ping.yml
+- hosts: all
+  tasks:
+  - name: "Just poking"
+    ping:
+vagrant@anscontrol:~/mar18$ ansible-playbook ping.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+TASK [Just poking] *************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook ping.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [anscontrol]
+
+TASK [Just poking] *************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cat ping.yml
+- hosts: all
+  tasks:
+  - name: "Just poking"
+    ping:
+vagrant@anscontrol:~/mar18$ ls /vagrant
+Vagrantfile
+vagrant@anscontrol:~/mar18$ ld
+ld: no input files
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts  ping.yml
+vagrant@anscontrol:~/mar18$ cp * /vagrant
+vagrant@anscontrol:~/mar18$
