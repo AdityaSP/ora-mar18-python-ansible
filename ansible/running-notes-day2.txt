@@ -904,3 +904,552 @@ vagrant@anscontrol:~/mar18$ cat web.yml
       state: restarted
 vagrant@anscontrol:~/mar18$ cp * /vagrant
 vagrant@anscontrol:~/mar18$
+
+--------------------------------------------------------------------------------
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Update cache] ************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=5    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ which ohai
+vagrant@anscontrol:~/mar18$ which facter
+vagrant@anscontrol:~/mar18$ ansible ansnode1 -m setup > /tmp/output.txt
+vagrant@anscontrol:~/mar18$ vi /tmp/output.txt
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=4    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ apt-get install facter
+E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
+E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?
+vagrant@anscontrol:~/mar18$ sudo apt-get install facter
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  fonts-lato javascript-common libjs-jquery libruby2.3 rake ruby ruby-did-you-mean ruby-json
+  ruby-minitest ruby-net-telnet ruby-power-assert ruby-test-unit ruby2.3 rubygems-integration unzip
+  virt-what zip
+Suggested packages:
+  apache2 | lighttpd | httpd ri ruby-dev bundler
+The following NEW packages will be installed:
+  facter fonts-lato javascript-common libjs-jquery libruby2.3 rake ruby ruby-did-you-mean ruby-json
+  ruby-minitest ruby-net-telnet ruby-power-assert ruby-test-unit ruby2.3 rubygems-integration unzip
+  virt-what zip
+0 upgraded, 18 newly installed, 0 to remove and 68 not upgraded.
+Need to get 6,492 kB of archives.
+After this operation, 29.2 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu xenial/main amd64 fonts-lato all 2.0-1 [2,693 kB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial/main amd64 rubygems-integration all 1.10 [4,966 B]
+Get:3 http://archive.ubuntu.com/ubuntu xenial/main amd64 rake all 10.5.0-2 [48.2 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial/main amd64 ruby-did-you-mean all 1.0.0-2 [8,390 B]
+Get:5 http://archive.ubuntu.com/ubuntu xenial/main amd64 ruby-minitest all 5.8.4-2 [36.6 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial/main amd64 ruby-net-telnet all 0.1.1-2 [12.6 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial/main amd64 ruby-power-assert all 0.2.7-1 [7,668 B]
+Get:8 http://archive.ubuntu.com/ubuntu xenial/main amd64 ruby-test-unit all 3.1.7-2 [60.3 kB]
+Get:9 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libruby2.3 amd64 2.3.1-2~16.04.11 [2,958 kB]
+Get:10 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 ruby2.3 amd64 2.3.1-2~16.04.11 [41.0 kB]
+Get:11 http://archive.ubuntu.com/ubuntu xenial/main amd64 ruby all 1:2.3.0+1 [5,530 B]
+Get:12 http://archive.ubuntu.com/ubuntu xenial/universe amd64 ruby-json amd64 1.8.3-1build4 [43.9 kB]
+Get:13 http://archive.ubuntu.com/ubuntu xenial/universe amd64 facter all 2.4.6-1 [75.1 kB]
+Get:14 http://archive.ubuntu.com/ubuntu xenial/main amd64 javascript-common all 11 [6,066 B]
+Get:15 http://archive.ubuntu.com/ubuntu xenial/main amd64 libjs-jquery all 1.11.3+dfsg-4 [161 kB]
+Get:16 http://archive.ubuntu.com/ubuntu xenial/main amd64 unzip amd64 6.0-20ubuntu1 [158 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial/main amd64 zip amd64 3.0-11 [158 kB]
+Get:18 http://archive.ubuntu.com/ubuntu xenial/universe amd64 virt-what amd64 1.14-1 [13.0 kB]
+Fetched 6,492 kB in 4s (1,341 kB/s)
+Selecting previously unselected package fonts-lato.
+(Reading database ... 39692 files and directories currently installed.)
+Preparing to unpack .../fonts-lato_2.0-1_all.deb ...
+Unpacking fonts-lato (2.0-1) ...
+Selecting previously unselected package rubygems-integration.
+Preparing to unpack .../rubygems-integration_1.10_all.deb ...
+Unpacking rubygems-integration (1.10) ...
+Selecting previously unselected package rake.
+Preparing to unpack .../archives/rake_10.5.0-2_all.deb ...
+Unpacking rake (10.5.0-2) ...
+Selecting previously unselected package ruby-did-you-mean.
+Preparing to unpack .../ruby-did-you-mean_1.0.0-2_all.deb ...
+Unpacking ruby-did-you-mean (1.0.0-2) ...
+Selecting previously unselected package ruby-minitest.
+Preparing to unpack .../ruby-minitest_5.8.4-2_all.deb ...
+Unpacking ruby-minitest (5.8.4-2) ...
+Selecting previously unselected package ruby-net-telnet.
+Preparing to unpack .../ruby-net-telnet_0.1.1-2_all.deb ...
+Unpacking ruby-net-telnet (0.1.1-2) ...
+Selecting previously unselected package ruby-power-assert.
+Preparing to unpack .../ruby-power-assert_0.2.7-1_all.deb ...
+Unpacking ruby-power-assert (0.2.7-1) ...
+Selecting previously unselected package ruby-test-unit.
+Preparing to unpack .../ruby-test-unit_3.1.7-2_all.deb ...
+Unpacking ruby-test-unit (3.1.7-2) ...
+Selecting previously unselected package libruby2.3:amd64.
+Preparing to unpack .../libruby2.3_2.3.1-2~16.04.11_amd64.deb ...
+Unpacking libruby2.3:amd64 (2.3.1-2~16.04.11) ...
+Selecting previously unselected package ruby2.3.
+Preparing to unpack .../ruby2.3_2.3.1-2~16.04.11_amd64.deb ...
+Unpacking ruby2.3 (2.3.1-2~16.04.11) ...
+Selecting previously unselected package ruby.
+Preparing to unpack .../ruby_1%3a2.3.0+1_all.deb ...
+Unpacking ruby (1:2.3.0+1) ...
+Selecting previously unselected package ruby-json.
+Preparing to unpack .../ruby-json_1.8.3-1build4_amd64.deb ...
+Unpacking ruby-json (1.8.3-1build4) ...
+Selecting previously unselected package facter.
+Preparing to unpack .../facter_2.4.6-1_all.deb ...
+Unpacking facter (2.4.6-1) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../javascript-common_11_all.deb ...
+Unpacking javascript-common (11) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../libjs-jquery_1.11.3+dfsg-4_all.deb ...
+Unpacking libjs-jquery (1.11.3+dfsg-4) ...
+Selecting previously unselected package unzip.
+Preparing to unpack .../unzip_6.0-20ubuntu1_amd64.deb ...
+Unpacking unzip (6.0-20ubuntu1) ...
+Selecting previously unselected package zip.
+Preparing to unpack .../archives/zip_3.0-11_amd64.deb ...
+Unpacking zip (3.0-11) ...
+Selecting previously unselected package virt-what.
+Preparing to unpack .../virt-what_1.14-1_amd64.deb ...
+Unpacking virt-what (1.14-1) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up fonts-lato (2.0-1) ...
+Setting up rubygems-integration (1.10) ...
+Setting up ruby-did-you-mean (1.0.0-2) ...
+Setting up ruby-minitest (5.8.4-2) ...
+Setting up ruby-net-telnet (0.1.1-2) ...
+Setting up ruby-power-assert (0.2.7-1) ...
+Setting up ruby-test-unit (3.1.7-2) ...
+Setting up javascript-common (11) ...
+Setting up libjs-jquery (1.11.3+dfsg-4) ...
+Setting up unzip (6.0-20ubuntu1) ...
+Setting up zip (3.0-11) ...
+Setting up virt-what (1.14-1) ...
+Setting up rake (10.5.0-2) ...
+Setting up libruby2.3:amd64 (2.3.1-2~16.04.11) ...
+Setting up ruby2.3 (2.3.1-2~16.04.11) ...
+Setting up ruby (1:2.3.0+1) ...
+Setting up ruby-json (1.8.3-1build4) ...
+Setting up facter (2.4.6-1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+vagrant@anscontrol:~/mar18$ ansible anscontrol -m setup > /tmp/output.txt
+vagrant@anscontrol:~/mar18$ vi /tmp/output.txt
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$ ansible anscontrol -m setup > /tmp/output.txt
+vagrant@anscontrol:~/mar18$ vi /tmp/output.txt
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$ git --version
+git version 2.7.4
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [anscontrol]
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+changed: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=4    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cd /tmp/
+code/       f1.txt      .font-unix/ .ICE-unix/  output.txt  .Test-unix/ .X11-unix/  .XIM-unix/
+vagrant@anscontrol:~/mar18$ cd /tmp/code/
+vagrant@anscontrol:/tmp/code$ ls
+mypage.html  README.md
+vagrant@anscontrol:/tmp/code$ cd -
+/home/vagrant/mar18
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [anscontrol]
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+TASK [Deploy code] *************************************************************
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=5    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [anscontrol]
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+changed: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [Update cache] ************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+TASK [Deploy code] *************************************************************
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=5    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ #sshpass -p "vagrant" ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub vagrant@ansnode2
+vagrant@anscontrol:~/mar18$ vi /etc/hosts
+vagrant@anscontrol:~/mar18$ sudo vi /etc/hosts
+vagrant@anscontrol:~/mar18$ ping ansnode2
+PING ansnode2 (192.168.90.3) 56(84) bytes of data.
+64 bytes from ansnode2 (192.168.90.3): icmp_seq=1 ttl=64 time=0.504 ms
+64 bytes from ansnode2 (192.168.90.3): icmp_seq=2 ttl=64 time=0.310 ms
+^C
+--- ansnode2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.310/0.407/0.504/0.097 ms
+vagrant@anscontrol:~/mar18$ sshpass -p "vagrant" ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub vagrant@ansnode2
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/vagrant/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'vagrant@ansnode2'"
+and check to make sure that only the key(s) you wanted were added.
+
+vagrant@anscontrol:~/mar18$ ssh ansnode2
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+vagrant@ansnode1:~$ exit
+logout
+Connection to ansnode2 closed.
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+  hosts (2):
+    anscontrol
+    ansnode1
+vagrant@anscontrol:~/mar18$ vi hosts
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+  hosts (3):
+    anscontrol
+    ansnode1
+    ansnode3
+vagrant@anscontrol:~/mar18$ vi hosts
+vagrant@anscontrol:~/mar18$ ansible --list-hosts all
+  hosts (3):
+    anscontrol
+    ansnode1
+    ansnode2
+vagrant@anscontrol:~/mar18$ ansible --list-hosts nodes
+  hosts (2):
+    ansnode1
+    ansnode2
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ cat hosts
+[control]
+anscontrol ansible_connection=local
+[nodes]
+ansnode1
+ansnode2
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+ERROR! no action detected in task
+
+The error appears to have been in '/home/vagrant/mar18/web.yml': line 5, column 5, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+  - name: "Update Cache"
+    ^ here
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: TypeError: 'NoneType' object is not iterable
+fatal: [anscontrol]: FAILED! => {"changed": false, "failed": true, "parsed": false}
+fatal: [ansnode1]: FAILED! => {"changed": false, "failed": true, "module_stderr": "", "module_stdout": "Traceback (most recent call last):\r\n  File \"/home/vagrant/.ansible/tmp/ansible-tmp-1553030993.68-239828653588400/apt\", line 2630, in <module>\r\n    main()\r\n  File \"/home/vagrant/.ansible/tmp/ansible-tmp-1553030993.68-239828653588400/apt\", line 660, in main\r\n    for package in packages:\r\nTypeError: 'NoneType' object is not iterable\r\n", "msg": "MODULE FAILURE", "parsed": false}
+fatal: [ansnode2]: FAILED! => {"changed": false, "failed": true, "module_stderr": "", "module_stdout": "Traceback (most recent call last):\r\n  File \"/home/vagrant/.ansible/tmp/ansible-tmp-1553030993.7-221862733559142/apt\", line 2630, in <module>\r\n    main()\r\n  File \"/home/vagrant/.ansible/tmp/ansible-tmp-1553030993.7-221862733559142/apt\", line 660, in main\r\n    for package in packages:\r\nTypeError: 'NoneType' object is not iterable\r\n", "msg": "MODULE FAILURE", "parsed": false}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=0    changed=0    unreachable=0    failed=1
+ansnode1                   : ok=0    changed=0    unreachable=0    failed=1
+ansnode2                   : ok=0    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18$ ssh ansnode2
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+72 packages can be updated.
+53 updates are security updates.
+
+
+Last login: Tue Mar 19 21:29:53 2019 from 192.168.90.1
+vagrant@ansnode1:~$ exit
+logout
+Connection to ansnode2 closed.
+vagrant@anscontrol:~/mar18$ ssh ansnode1
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+72 packages can be updated.
+53 updates are security updates.
+
+
+Last login: Tue Mar 19 21:29:54 2019 from 192.168.90.1
+vagrant@ansnode1:~$ exit
+logout
+Connection to ansnode1 closed.
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ping ansnode2
+PING ansnode2 (192.168.90.3) 56(84) bytes of data.
+64 bytes from ansnode2 (192.168.90.3): icmp_seq=1 ttl=64 time=0.527 ms
+64 bytes from ansnode2 (192.168.90.3): icmp_seq=2 ttl=64 time=0.625 ms
+^C
+--- ansnode2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 0.527/0.576/0.625/0.049 ms
+vagrant@anscontrol:~/mar18$ sshpass -p "vagrant" ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub vagrant@ansnode2
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/vagrant/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'vagrant@ansnode2'"
+and check to make sure that only the key(s) you wanted were added.
+
+vagrant@anscontrol:~/mar18$ ssh ansnode2                                                               Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+vagrant@ansnode2:~$ exit
+logout
+Connection to ansnode2 closed.
+vagrant@anscontrol:~/mar18$ ansible all -m ping
+anscontrol | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ansnode1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ansnode2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+ok: [ansnode1]
+ok: [anscontrol]
+ok: [ansnode2]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+changed: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+changed: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+changed: [ansnode2]
+
+RUNNING HANDLER [restart apache2] **********************************************
+changed: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=5    changed=0    unreachable=0    failed=0
+ansnode2                   : ok=6    changed=4    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+changed: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+changed: [ansnode1]
+changed: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=5    changed=1    unreachable=0    failed=0
+ansnode2                   : ok=5    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cp * /vagrant
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$
