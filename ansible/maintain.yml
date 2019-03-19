@@ -1,0 +1,25 @@
+- hosts: nodes
+  become: true
+  gather_facts: no
+  tasks:
+  - name: "Start apache"
+    service:
+      name: apache2
+      state: started
+    tags:
+    - start
+
+  - name: "Stop apache"
+    service:
+      name: apache2
+      state: stopped
+    tags:
+    - stop
+
+  - name: "Restart apache"
+    service:
+      name: apache2
+      state: restarted
+    tags:
+    - restart 
+
