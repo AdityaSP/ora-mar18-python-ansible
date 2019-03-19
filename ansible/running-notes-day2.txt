@@ -834,3 +834,73 @@ vagrant@anscontrol:~/mar18$ ls
 ansible.cfg  file.yml  hosts  ping.yml  web.yml
 vagrant@anscontrol:~/mar18$ cp * /vagrant
 vagrant@anscontrol:~/mar18$
+
+----------------------------------------------------------------------------------
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+changed: [ansnode1]
+
+RUNNING HANDLER [restart apache2] **********************************************
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=5    changed=2    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=4    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cat web.yml
+- hosts: nodes
+  become: true
+  tasks:
+  - name: "Install apache2"
+    apt:
+      name: apache2
+      update_cache: yes
+  - name: "Start the service"
+    service:
+      name: apache2
+      enabled: yes
+      state: started
+  - name: "Change port number"
+    lineinfile:
+      dest: "/etc/apache2/ports.conf"
+      regexp: "^Listen"
+      line: "Listen 8081"
+    notify: "restart apache2"
+  handlers:
+  - name: "restart apache2"
+    service:
+      name: apache2
+      state: restarted
+vagrant@anscontrol:~/mar18$ cp * /vagrant
+vagrant@anscontrol:~/mar18$
