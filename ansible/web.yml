@@ -14,7 +14,9 @@
     lineinfile:
       dest: "/etc/apache2/ports.conf"
       regexp: "^Listen"
-      line: "Listen 8080"
+      line: "Listen 8081"
+    notify: "restart apache2"
+  handlers: 
   - name: "restart apache2"
     service:
       name: apache2
