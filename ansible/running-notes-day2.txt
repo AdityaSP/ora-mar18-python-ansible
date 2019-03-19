@@ -331,3 +331,506 @@ vagrant@anscontrol:~/mar18$ cat file.yml
       state: absent
 vagrant@anscontrol:~/mar18$ cp * /vagrant/
 vagrant@anscontrol:~/mar18$
+
+-------------------------------------------------------------------------------------------
+vagrant@anscontrol:~/mar18$ cat web.yml
+- hosts: nodes
+  tasks:
+  - name: "Install apache2"
+    apt:
+      name: apache2
+      update_cache: yes
+vagrant@anscontrol:~/mar18$ cat hosts
+[control]
+anscontrol ansible_connection=local
+[nodes]
+ansnode1
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+fatal: [ansnode1]: FAILED! => {"changed": false, "cmd": "apt-get update '&&' apt-get install python-apt -y -q --force-yes", "failed": true, "msg": "W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)\nE: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\nE: Unable to lock directory /var/lib/apt/lists/\nW: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)\nW: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)", "rc": 100, "stderr": "W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)\nE: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\nE: Unable to lock directory /var/lib/apt/lists/\nW: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)\nW: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)\n", "stdout": "Reading package lists...\n", "stdout_lines": ["Reading package lists..."]}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=1    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+fatal: [ansnode1]: FAILED! => {"changed": false, "cmd": "apt-get update '&&' apt-get install python-apt -y -q --force-yes", "failed": true, "msg": "W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)\nE: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\nE: Unable to lock directory /var/lib/apt/lists/\nW: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)\nW: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)", "rc": 100, "stderr": "W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)\nE: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\nE: Unable to lock directory /var/lib/apt/lists/\nW: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)\nW: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)\n", "stdout": "Reading package lists...\n", "stdout_lines": ["Reading package lists..."]}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=1    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=2    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible ansnode1 -m command -a "sudo service apache2 status"
+ansnode1 | SUCCESS | rc=0 >>
+● apache2.service - LSB: Apache2 web server
+   Loaded: loaded (/etc/init.d/apache2; bad; vendor preset: enabled)
+  Drop-In: /lib/systemd/system/apache2.service.d
+           └─apache2-systemd.conf
+   Active: active (running) since Tue 2019-03-19 19:25:00 UTC; 1min 27s ago
+     Docs: man:systemd-sysv-generator(8)
+   CGroup: /system.slice/apache2.service
+           ├─15793 /usr/sbin/apache2 -k start
+           ├─15795 /usr/sbin/apache2 -k start
+           └─15796 /usr/sbin/apache2 -k start
+
+Mar 19 19:24:59 ansnode1 systemd[1]: Starting LSB: Apache2 web server...
+Mar 19 19:24:59 ansnode1 apache2[15769]:  * Starting Apache httpd web server apache2
+Mar 19 19:24:59 ansnode1 apache2[15769]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+Mar 19 19:25:00 ansnode1 apache2[15769]:  *
+Mar 19 19:25:00 ansnode1 systemd[1]: Started LSB: Apache2 web server.
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible ansnode1 -m command -a "sudo service apache2 status"
+^CProcess WorkerProcess-2:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+ [ERROR]: User interrupted execution
+
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=3    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+fatal: [ansnode1]: FAILED! => {"changed": false, "failed": true, "msg": "unsupported parameter for module: regex"}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=3    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+fatal: [ansnode1]: FAILED! => {"changed": false, "failed": true, "msg": "unsupported parameter for module: path"}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=3    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible --help
+Usage: ansible <host-pattern> [options]
+
+Options:
+  -a MODULE_ARGS, --args=MODULE_ARGS
+                        module arguments
+  --ask-become-pass     ask for privilege escalation password
+  -k, --ask-pass        ask for connection password
+  --ask-su-pass         ask for su password (deprecated, use become)
+  -K, --ask-sudo-pass   ask for sudo password (deprecated, use become)
+  --ask-vault-pass      ask for vault password
+  -B SECONDS, --background=SECONDS
+                        run asynchronously, failing after X seconds
+                        (default=N/A)
+  -b, --become          run operations with become (nopasswd implied)
+  --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | runas |
+                        doas ]
+  --become-user=BECOME_USER
+                        run operations as this user (default=root)
+  -C, --check           don't make any changes; instead, try to predict some
+                        of the changes that may occur
+  -c CONNECTION, --connection=CONNECTION
+                        connection type to use (default=smart)
+  -D, --diff            when changing (small) files and templates, show the
+                        differences in those files; works great with --check
+  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
+                        set additional variables as key=value or YAML/JSON
+  -f FORKS, --forks=FORKS
+                        specify number of parallel processes to use
+                        (default=5)
+  -h, --help            show this help message and exit
+  -i INVENTORY, --inventory-file=INVENTORY
+                        specify inventory host path
+                        (default=/home/vagrant/mar18/hosts) or comma separated
+                        host list
+  -l SUBSET, --limit=SUBSET
+                        further limit selected hosts to an additional pattern
+  --list-hosts          outputs a list of matching hosts; does not execute
+                        anything else
+  -m MODULE_NAME, --module-name=MODULE_NAME
+                        module name to execute (default=command)
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        specify path(s) to module library (default=None)
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILE
+                        new vault password file for rekey
+  -o, --one-line        condense output
+  --output=OUTPUT_FILE  output file name for encrypt or decrypt; use - for
+                        stdout
+  -P POLL_INTERVAL, --poll=POLL_INTERVAL
+                        set the poll interval if using -B (default=15)
+  --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
+                        use this file to authenticate the connection
+  --scp-extra-args=SCP_EXTRA_ARGS
+                        specify extra arguments to pass to scp only (e.g. -l)
+  --sftp-extra-args=SFTP_EXTRA_ARGS
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        -l)
+  --ssh-common-args=SSH_COMMON_ARGS
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        ProxyCommand)
+  --ssh-extra-args=SSH_EXTRA_ARGS
+                        specify extra arguments to pass to ssh only (e.g. -R)
+  -S, --su              run operations with su (deprecated, use become)
+  -R SU_USER, --su-user=SU_USER
+                        run operations with su as this user (default=root)
+                        (deprecated, use become)
+  -s, --sudo            run operations with sudo (nopasswd) (deprecated, use
+                        become)
+  -U SUDO_USER, --sudo-user=SUDO_USER
+                        desired sudo user (default=root) (deprecated, use
+                        become)
+  --syntax-check        perform a syntax check on the playbook, but do not
+                        execute it
+  -T TIMEOUT, --timeout=TIMEOUT
+                        override the connection timeout in seconds
+                        (default=10)
+  -t TREE, --tree=TREE  log output to this directory
+  -u REMOTE_USER, --user=REMOTE_USER
+                        connect as this user (default=None)
+  --vault-password-file=VAULT_PASSWORD_FILE
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+vagrant@anscontrol:~/mar18$ ansible
+ansible           ansible-galaxy    ansible-pull
+ansible-doc       ansible-playbook  ansible-vault
+vagrant@anscontrol:~/mar18$ ansible-doc --help
+Usage: ansible-doc [options] [module...]
+
+Options:
+  -h, --help            show this help message and exit
+  -l, --list            List available modules
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        specify path(s) to module library (default=None)
+  -s, --snippet         Show playbook snippet for specified module(s)
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+vagrant@anscontrol:~/mar18$ ansible-doc -m lineinfile
+Usage: ansible-doc [options] [module...]
+
+ansible-doc: error: no such option: -m
+vagrant@anscontrol:~/mar18$ ansible-doc -M lineinfile
+Usage: ansible-doc [options] [module...]
+
+Options:
+  -h, --help            show this help message and exit
+  -l, --list            List available modules
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        specify path(s) to module library (default=None)
+  -s, --snippet         Show playbook snippet for specified module(s)
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+ERROR! Incorrect options passed
+vagrant@anscontrol:~/mar18$ ansible-doc lineinfile
+less 481 (GNU regular expressions)
+Copyright (C) 1984-2015  Mark Nudelman
+
+less comes with NO WARRANTY, to the extent permitted by law.
+For information about the terms of redistribution,
+see the file named README in the less distribution.
+Homepage: http://www.greenwoodsoftware.com/less
+> LINEINFILE
+
+  This module will search a file for a line, and ensure that it is present or
+  absent. This is primarily useful when you want to change a single line in a file
+  only. See the [replace] module if you want to change multiple, similar lines; for
+  other cases, see the [copy] or [template] modules.
+
+Options (= is mandatory):
+
+- backrefs
+        Used with `state=present'. If set, line can contain backreferences (both
+        positional and named) that will get populated if the `regexp' matches. This
+        flag changes the operation of the module slightly; `insertbefore' and
+        `insertafter' will be ignored, and if the `regexp' doesn't match anywhere
+        in the file, the file will be left unchanged. If the `regexp' does match,
+        the last matching line will be replaced by the expanded line parameter.
+        (Choices: yes, no) [Default: no]
+
+- backup
+        Create a backup file including the timestamp information so you can get the
+        original file back if you somehow clobbered it incorrectly. (Choices: yes,
+        no) [Default: no]
+
+- create
+        Used with `state=present'. If specified, the file will be created if it
+        does not already exist. By default it will fail if the file is missing.
+        (Choices: yes, no) [Default: no]
+
+= dest
+        The file to modify.
+
+- follow
+        This flag indicates that filesystem links, if they exist, should be
+        followed. (Choices: yes, no) [Default: no]
+
+- group
+        name of the group that should own the file/directory, as would be fed to
+        `chown' [Default: None]
+
+- insertafter
+        Used with `state=present'. If specified, the line will be inserted after
+        the last match of specified regular expression. A special value is
+        available; `EOF' for inserting the line at the end of the file. If
+        specified regular expresion has no matches, EOF will be used instead. May
+        not be used with `backrefs'. (Choices: EOF, *regex*) [Default: EOF]
+
+- insertbefore
+        Used with `state=present'. If specified, the line will be inserted before
+        the last match of specified regular expression. A value is available; `BOF'
+        for inserting the line at the beginning of the file. If specified regular
+        expresion has no matches, the line will be inserted at the end of the file.
+        May not be used with `backrefs'. (Choices: BOF, *regex*)
+
+- line
+        Required for `state=present'. The line to insert/replace into the file. If
+        `backrefs' is set, may contain backreferences that will get expanded with
+        the `regexp' capture groups if the regexp matches.
+
+- mode
+        mode the file or directory should be. For those used to `/usr/bin/chmod'
+        remember that modes are actually octal numbers (like 0644). Leaving off the
+        leading zero will likely have unexpected results. As of version 1.8, the
+        mode may be specified as a symbolic mode (for example, `u+rwx' or
+        `u=rw,g=r,o=r'). [Default: None]
+
+- others
+        All arguments accepted by the [file] module also work here.
+
+- owner
+        name of the user that should own the file/directory, as would be fed to
+        `chown' [Default: None]
+
+- regexp
+        The regular expression to look for in every line of the file. For
+        `state=present', the pattern to replace if found; only the last line found
+        will be replaced. For `state=absent', the pattern of the line to remove.
+        Uses Python regular expressions; see
+        http://docs.python.org/2/library/re.html.
+
+- selevel
+        level part of the SELinux file context. This is the MLS/MCS attribute,
+        sometimes known as the `range'. `_default' feature works as for `seuser'.
+        [Default: s0]
+
+- serole
+        role part of SELinux file context, `_default' feature works as for
+        `seuser'. [Default: None]
+
+- setype
+        type part of SELinux file context, `_default' feature works as for
+        `seuser'. [Default: None]
+
+- seuser
+        user part of SELinux file context. Will default to system policy, if
+        applicable. If set to `_default', it will use the `user' portion of the
+        policy if available [Default: None]
+
+- state
+        Whether the line should be there or not. (Choices: present, absent)
+        [Default: present]
+
+- validate
+        The validation command to run before copying into place. The path to the
+        file to validate is passed in via '%s' which must be present as in the
+        example below. The command is passed securely so shell features like
+        expansion and pipes won't work. [Default: None]
+
+EXAMPLES:
+- lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=enforcing
+
+- lineinfile: dest=/etc/sudoers state=absent regexp="^%wheel"
+
+- lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 localhost' owner=root group=root m
+
+- lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^Listen " insertafter="^#Listen " line="Listen 80
+
+- lineinfile: dest=/etc/services regexp="^# port for http" insertbefore="^www.*80/tcp" line="# port for
+
+# Add a line to a file if it does not exist, without passing regexp
+- lineinfile: dest=/tmp/testfile line="192.168.1.99 foo.lab.net foo"
+
+# Fully quoted because of the ': ' on the line. See the Gotchas in the YAML docs.
+- lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
+
+- lineinfile: dest=/opt/jboss-as/bin/standalone.conf regexp='^(.*)Xms(\d+)m(.*)$' line='\1Xms${xms}m\3'
+
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+changed: [ansnode1]
+
+TASK [restart apache2] *********************************************************
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=5    changed=2    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cat web.yml
+- hosts: nodes
+  become: true
+  tasks:
+  - name: "Install apache2"
+    apt:
+      name: apache2
+      update_cache: yes
+  - name: "Start the service"
+    service:
+      name: apache2
+      enabled: yes
+      state: started
+  - name: "Change port number"
+    lineinfile:
+      dest: "/etc/apache2/ports.conf"
+      regexp: "^Listen"
+      line: "Listen 8080"
+  - name: "restart apache2"
+    service:
+      name: apache2
+      state: restarted
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+fatal: [ansnode1]: UNREACHABLE! => {"changed": false, "msg": "ERROR! SSH encountered an unknown error during the connection. We recommend you re-run the command using -vvvv, which will enable SSH debugging output to help diagnose the issue", "unreachable": true}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=0    changed=0    unreachable=1    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+fatal: [ansnode1]: UNREACHABLE! => {"changed": false, "msg": "ERROR! SSH encountered an unknown error during the connection. We recommend you re-run the command using -vvvv, which will enable SSH debugging output to help diagnose the issue", "unreachable": true}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=0    changed=0    unreachable=1    failed=0
+
+vagrant@anscontrol:~/mar18$ ssh ansnode1
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-131-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+72 packages can be updated.
+53 updates are security updates.
+
+
+Last login: Tue Mar 19 19:51:28 2019 from 192.168.90.1
+vagrant@ansnode1:~$ exitexit
+-bash: exitexit: command not found
+vagrant@ansnode1:~$
+vagrant@ansnode1:~$
+vagrant@ansnode1:~$
+vagrant@ansnode1:~$
+vagrant@ansnode1:~$ exit
+logout
+Connection to ansnode1 closed.
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+
+TASK [restart apache2] *********************************************************
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=5    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$ cp * /vagrant
+vagrant@anscontrol:~/mar18$
