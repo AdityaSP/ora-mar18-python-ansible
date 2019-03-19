@@ -1453,3 +1453,89 @@ vagrant@anscontrol:~/mar18$ cp * /vagrant
 vagrant@anscontrol:~/mar18$ ls
 ansible.cfg  file.yml  hosts  ping.yml  web.yml
 vagrant@anscontrol:~/mar18$
+
+
+--------------------------------------------------------------------------------------------------
+vagrant@anscontrol:~/mar18$ vi maintain.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook maintain.yml --tags "stop"
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Stop apache] *************************************************************
+changed: [ansnode1]
+changed: [ansnode2]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=2    changed=1    unreachable=0    failed=0
+ansnode2                   : ok=2    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook maintain.yml --tags "start"
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+
+ok: [ansnode2]
+^C
+PLAY RECAP *********************************************************************
+ansnode2                   : ok=1    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ vi maintain.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible-playbook maintain.yml --tags "start"
+
+PLAY ***************************************************************************
+
+TASK [Start apache] ************************************************************
+changed: [ansnode2]
+
+
+
+changed: [ansnode1]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=1    changed=1    unreachable=0    failed=0
+ansnode2                   : ok=1    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible-playbook maintain.yml --tags "restart"
+
+PLAY ***************************************************************************
+
+TASK [Restart apache] **********************************************************
+changed: [ansnode1]
+changed: [ansnode2]
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=1    changed=1    unreachable=0    failed=0
+ansnode2                   : ok=1    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       anscontrol      anscontrol
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.90.1 anscontrol
+192.168.90.2 ansnode1
+192.168.90.3 ansnode2
+vagrant@anscontrol:~/mar18$ ansible-playbook maintain.yml --tags "stop" --limit ansnode2
+
+PLAY ***************************************************************************
+
+TASK [Stop apache] *************************************************************
+changed: [ansnode2]
+
+PLAY RECAP *********************************************************************
+ansnode2                   : ok=1    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
