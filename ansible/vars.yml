@@ -1,0 +1,5 @@
+- hosts: anscontrol
+  vars:
+    username: Scott
+  tasks:
+  - debug: msg="Hello {{ username }}!"

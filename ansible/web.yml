@@ -23,6 +23,8 @@
 - hosts: nodes
   gather_facts: no
   become: true
+  vars:
+    apache_port: 80
   tasks:
   - name: "Install apache2"
     apt:
@@ -37,7 +39,7 @@
     lineinfile:
       dest: "/etc/apache2/ports.conf"
       regexp: "^Listen"
-      line: "Listen 8081"
+      line: "Listen {{ apache_port }}"
     notify: "restart apache2"
   - name: "Deploy code"
     copy:
