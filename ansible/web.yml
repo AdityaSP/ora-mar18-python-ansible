@@ -6,6 +6,7 @@
     apt:
       cache_valid_time: 36000
       update_cache: yes
+    when: ansible_os_family == 'Debian'
 
 - hosts: control
   gather_facts: no

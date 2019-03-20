@@ -1,0 +1,11 @@
+- hosts: ansnode1
+  become: true
+  gather_facts: no
+  tasks:
+  - command: "service apache2 status"
+    register: output
+    ignore_errors: true
+  - debug: msg="{{ output }}"
+  - name: "Start the service"
+    command: "service apache2 start" 
+    when: output.rc == 3 and "inactive in output.stdout"
