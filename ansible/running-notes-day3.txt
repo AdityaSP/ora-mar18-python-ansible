@@ -1,0 +1,155 @@
+vagrant@anscontrol:~$ cd mar18/
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  maintain.yml  ping.yml  web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible -m ping all
+anscontrol | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ansnode1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ansnode2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+vagrant@anscontrol:~/mar18$ vi vars.yml
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  tasks:
+  - debug: msg="Hello World!"
+vagrant@anscontrol:~/mar18$ ansible-playbook vars.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "Hello World!"
+}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi vars.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook vars.yml --extra-vars "username=scott"
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "Hello scott!"
+}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  tasks:
+  - debug: msg="Hello {{ username }}!"
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ l
+ansible.cfg  file.yml  hosts  maintain.yml  ping.yml  vars.yml  web.yml
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  maintain.yml  ping.yml  vars.yml  web.yml
+vagrant@anscontrol:~/mar18$ vi vars.yml
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  vars:
+    username: Scott
+  tasks:
+  - debug: msg="Hello {{ username }}!"
+vagrant@anscontrol:~/mar18$ ansible-playbook vars.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "Hello Scott!"
+}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ ansible-playbook vars.yml --extra-vars "username=Aditya"
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "Hello Aditya!"
+}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ #ansible-playbook vars.yml --extra-vars "username=Aditya"
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  vars:
+    username: Scott
+  tasks:
+  - debug: msg="Hello {{ username }}!"
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  hosts  maintain.yml  ping.yml  vars.yml  web.yml
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+changed: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode2]
+ok: [ansnode1]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode2]
+ok: [ansnode1]
+
+TASK [Change port number] ******************************************************
+changed: [ansnode1]
+changed: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+RUNNING HANDLER [restart apache2] **********************************************
+changed: [ansnode1]
+changed: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=1    unreachable=0    failed=0
+ansnode1                   : ok=6    changed=2    unreachable=0    failed=0
+ansnode2                   : ok=6    changed=2    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
