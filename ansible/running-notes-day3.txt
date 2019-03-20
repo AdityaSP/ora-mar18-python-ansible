@@ -958,3 +958,443 @@ vagrant@anscontrol:~/mar18$
 vagrant@anscontrol:~/mar18$ cp * /vagrant/
 vagrant@anscontrol:~/mar18$
 
+
+############################################################################################
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  file.yml  maintain.yml  trial.yml       var_default.yml  vars.yml
+cond.yml     hosts     ping.yml      var_Debian.yml  var_Rhel.yml     web.yml
+vagrant@anscontrol:~/mar18$ mkdir proj_v1
+vagrant@anscontrol:~/mar18$ cd proj_v1/
+vagrant@anscontrol:~/mar18/proj_v1$ cp ../web.yml .
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+web.yml
+vagrant@anscontrol:~/mar18/proj_v1$ mv web.yml stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi apache.yml stack.yml
+2 files to edit
+vagrant@anscontrol:~/mar18/proj_v1$ vi ap
+vagrant@anscontrol:~/mar18/proj_v1$ vi apache.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+apache.yml  stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$
+vagrant@anscontrol:~/mar18/proj_v1$ cat apache.yml
+- name: "Install {{ package_name }}"
+  package:
+    name: "{{ package_name }}"
+- name: "Start the service"
+  service:
+    name: "{{ package_name }}"
+    enabled: yes
+    state: started
+- name: "Change port number"
+  lineinfile:
+    dest: "/etc/apache2/ports.conf"
+    regexp: "^Listen"
+    line: "Listen {{ apache_port }}"
+  notify: "restart {{ package_name }}"
+
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+
+PLAY ***************************************************************************
+skipping: no hosts matched
+
+PLAY ***************************************************************************
+skipping: no hosts matched
+
+PLAY ***************************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+
+vagrant@anscontrol:~/mar18/proj_v1$ cd ..
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts         proj_v1         var_default.yml  web.yml
+cond.yml     maintain.yml  trial.yml       var_Rhel.yml
+file.yml     ping.yml      var_Debian.yml  vars.yml
+vagrant@anscontrol:~/mar18$ cd proj_v1/
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+apache.yml  stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ cp ../ansible.cfg .
+vagrant@anscontrol:~/mar18/proj_v1$ grep inventory ansible.cfg
+inventory      = /home/vagrant/mar18/hosts
+# if inventory variables overlap, does the higher precedence one win
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+fatal: [ansnode1]: FAILED! => {"failed": true, "msg": "ERROR! The conditional check 'ansible_os_family == 'Debian'' failed. The error was: ERROR! error while evaluating conditional (ansible_os_family == 'Debian'): ERROR! 'ansible_os_family' is undefined\n\nThe error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 5, column 5, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n  - name: \"Update Cache\"\n    ^ here\n"}
+fatal: [anscontrol]: FAILED! => {"failed": true, "msg": "ERROR! The conditional check 'ansible_os_family == 'Debian'' failed. The error was: ERROR! error while evaluating conditional (ansible_os_family == 'Debian'): ERROR! 'ansible_os_family' is undefined\n\nThe error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 5, column 5, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n  - name: \"Update Cache\"\n    ^ here\n"}
+fatal: [ansnode2]: FAILED! => {"failed": true, "msg": "ERROR! The conditional check 'ansible_os_family == 'Debian'' failed. The error was: ERROR! error while evaluating conditional (ansible_os_family == 'Debian'): ERROR! 'ansible_os_family' is undefined\n\nThe error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 5, column 5, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n  - name: \"Update Cache\"\n    ^ here\n"}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=0    changed=0    unreachable=0    failed=1
+ansnode1                   : ok=0    changed=0    unreachable=0    failed=1
+ansnode2                   : ok=0    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ cp ../var_* .
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+fatal: [anscontrol]: FAILED! => {"failed": true, "msg": "ERROR! The conditional check 'ansible_os_family == 'Debian'' failed. The error was: ERROR! error while evaluating conditional (ansible_os_family == 'Debian'): ERROR! 'ansible_os_family' is undefined\n\nThe error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 5, column 5, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n  - name: \"Update Cache\"\n    ^ here\n"}
+fatal: [ansnode1]: FAILED! => {"failed": true, "msg": "ERROR! The conditional check 'ansible_os_family == 'Debian'' failed. The error was: ERROR! error while evaluating conditional (ansible_os_family == 'Debian'): ERROR! 'ansible_os_family' is undefined\n\nThe error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 5, column 5, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n  - name: \"Update Cache\"\n    ^ here\n"}
+fatal: [ansnode2]: FAILED! => {"failed": true, "msg": "ERROR! The conditional check 'ansible_os_family == 'Debian'' failed. The error was: ERROR! error while evaluating conditional (ansible_os_family == 'Debian'): ERROR! 'ansible_os_family' is undefined\n\nThe error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 5, column 5, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n  - name: \"Update Cache\"\n    ^ here\n"}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=0    changed=0    unreachable=0    failed=1
+ansnode1                   : ok=0    changed=0    unreachable=0    failed=1
+ansnode2                   : ok=0    changed=0    unreachable=0    failed=1
+
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [anscontrol]
+ok: [ansnode2]
+
+TASK [Update Cache] ************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [include] *****************************************************************
+included: /home/vagrant/mar18/proj_v1/apache.yml for ansnode1, ansnode2
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=4    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=8    changed=0    unreachable=0    failed=0
+ansnode2                   : ok=8    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18/proj_v1$ ls -ltra
+total 40
+drwxrwxr-x 3 vagrant vagrant  4096 Mar 20 17:43 ..
+-rw-rw-r-- 1 vagrant vagrant   363 Mar 20 17:47 apache.yml
+-rw-r--r-- 1 vagrant vagrant 10307 Mar 20 17:50 ansible.cfg
+-rw-rw-r-- 1 vagrant vagrant    20 Mar 20 17:51 var_Rhel.yml
+-rw-rw-r-- 1 vagrant vagrant    22 Mar 20 17:51 var_default.yml
+-rw-rw-r-- 1 vagrant vagrant    22 Mar 20 17:51 var_Debian.yml
+-rw-rw-r-- 1 vagrant vagrant   793 Mar 20 17:52 stack.yml
+drwxrwxr-x 2 vagrant vagrant  4096 Mar 20 17:52 .
+vagrant@anscontrol:~/mar18/proj_v1$ mkdir vars
+vagrant@anscontrol:~/mar18/proj_v1$ mv var_* vars/
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+ok: [anscontrol]
+
+TASK [Update Cache] ************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [include] *****************************************************************
+included: /home/vagrant/mar18/proj_v1/apache.yml for ansnode1, ansnode2
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=4    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=8    changed=0    unreachable=0    failed=0
+ansnode2                   : ok=8    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+ansible.cfg  apache.yml  stack.yml  vars
+vagrant@anscontrol:~/mar18/proj_v1$ ls -ltra
+total 32
+drwxrwxr-x 3 vagrant vagrant  4096 Mar 20 17:43 ..
+-rw-rw-r-- 1 vagrant vagrant   363 Mar 20 17:47 apache.yml
+-rw-r--r-- 1 vagrant vagrant 10307 Mar 20 17:50 ansible.cfg
+drwxrwxr-x 2 vagrant vagrant  4096 Mar 20 17:53 vars
+-rw-rw-r-- 1 vagrant vagrant   803 Mar 20 17:53 stack.yml
+drwxrwxr-x 3 vagrant vagrant  4096 Mar 20 17:53 .
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi control.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi nodes.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+ERROR! playbook entries must be either a valid play or an include statement
+
+The error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 10, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+- include control.yml
+  ^ here
+
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 11, column 1, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+include control.yml
+include nodes.yml
+^ here
+
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+ERROR! playbook entries must be either a valid play or an include statement
+
+The error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 10, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+- control.yml
+  ^ here
+
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+ERROR! playbook entries must be either a valid play or an include statement
+
+The error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 10, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+- include control.yml
+  ^ here
+
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+ERROR! playbook entries must be either a valid play or an include statement
+
+The error appears to have been in '/home/vagrant/mar18/proj_v1/stack.yml': line 10, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+- include control.yml
+  ^ here
+
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+ansible.cfg  apache.yml  control.yml  nodes.yml  stack.yml  vars
+vagrant@anscontrol:~/mar18/proj_v1$ cat stack.yml
+#- hosts: all
+#  become: true
+#  tasks:
+#  - name: "Update Cache"
+#    apt:
+#      cache_valid_time: 36000
+#      update_cache: yes
+#    when: ansible_os_family == 'Debian'
+
+- include control.yml
+- include nodes.yml
+vagrant@anscontrol:~/mar18/proj_v1$ vi stack.yml
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-playbook stack.yml
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [include] *****************************************************************
+included: /home/vagrant/mar18/proj_v1/apache.yml for ansnode1, ansnode2
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+l
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=2    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=6    changed=0    unreachable=0    failed=0
+ansnode2                   : ok=6    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+ansible.cfg  apache.yml  control.yml  nodes.yml  stack.yml  vars
+vagrant@anscontrol:~/mar18/proj_v1$
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+ansible.cfg  apache.yml  control.yml  nodes.yml  stack.yml  vars
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-galaxy init -p roles/ apache2
+
+
+^C
+ [ERROR]: User interrupted execution
+
+vagrant@anscontrol:~/mar18/proj_v1$
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-galaxy --help
+Usage: ansible-galaxy [delete|import|info|init|install|list|login|remove|search|setup] [--help] [options] ...
+
+Options:
+  -h, --help     show this help message and exit
+  -v, --verbose  verbose mode (-vvv for more, -vvvv to enable connection
+                 debugging)
+  --version      show program's version number and exit
+ERROR! Missing required action
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-galaxy init -h
+Usage: ansible-galaxy init [options] role_name
+
+Options:
+  -f, --force           Force overwriting an existing role
+  -h, --help            show this help message and exit
+  -c, --ignore-certs    Ignore SSL certificate validation errors.
+  -p INIT_PATH, --init-path=INIT_PATH
+                        The path in which the skeleton role will be created.
+                        The default is the current working directory.
+  --offline             Don't query the galaxy API when creating roles
+  -s API_SERVER, --server=API_SERVER
+                        The API server destination
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+ansible.cfg  apache.yml  control.yml  nodes.yml  roles  stack.yml  vars
+vagrant@anscontrol:~/mar18/proj_v1$ cd roles/
+vagrant@anscontrol:~/mar18/proj_v1/roles$ ls
+apache2
+vagrant@anscontrol:~/mar18/proj_v1/roles$ tree apache2/
+apache2/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+└── README.md
+
+4 directories, 3 files
+vagrant@anscontrol:~/mar18/proj_v1/roles$ rm -rf apache2/
+vagrant@anscontrol:~/mar18/proj_v1/roles$ cd ..
+vagrant@anscontrol:~/mar18/proj_v1$ ansible-galaxy init -p roles/ apache2
+- apache2 was created successfully
+vagrant@anscontrol:~/mar18/proj_v1$ ls
+ansible.cfg  apache.yml  control.yml  nodes.yml  roles  stack.yml  vars
+vagrant@anscontrol:~/mar18/proj_v1$ cd roles/
+vagrant@anscontrol:~/mar18/proj_v1/roles$ ls
+apache2
+vagrant@anscontrol:~/mar18/proj_v1/roles$ tree apache2
+apache2
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+8 directories, 8 files
+vagrant@anscontrol:~/mar18/proj_v1/roles$ vi apache2/meta/main.yml
+vagrant@anscontrol:~/mar18/proj_v1/roles$ ls
+apache2
+vagrant@anscontrol:~/mar18/proj_v1/roles$ ls -ltra
+total 12
+drwxrwxr-x  4 vagrant vagrant 4096 Mar 20 18:11 ..
+drwxrwxr-x  3 vagrant vagrant 4096 Mar 20 18:13 .
+drwxrwxr-x 10 vagrant vagrant 4096 Mar 20 18:13 apache2
+vagrant@anscontrol:~/mar18/proj_v1/roles$ cd ..
+vagrant@anscontrol:~/mar18/proj_v1$ cd ..
+vagrant@anscontrol:~/mar18$ cp -r * /vagrant/
+vagrant@anscontrol:~/mar18$
