@@ -1,0 +1,8 @@
+- hosts: control
+  gather_facts: no
+  become: true
+  tasks:
+  - name: "install git"
+    apt:
+      name: git
+      update_cache: no

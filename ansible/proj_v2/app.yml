@@ -1,0 +1,15 @@
+- hosts: control
+  gather_facts: no
+  tasks:
+  - name: "Clone code"
+    git:
+      dest: "/tmp/code"
+      repo: "https://github.com/AdityaSP/htmlonly.git"
+
+- hosts: nodes
+  become: true
+  tasks:
+  - name: "Deploy code"
+    copy:
+      src: "/tmp/code/mypage.html"
+      dest: "/var/www/html"

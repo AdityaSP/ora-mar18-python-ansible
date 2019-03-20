@@ -1,0 +1,8 @@
+- hosts: nodes
+  become: true
+  vars_files:
+  - ["vars/var_{{ ansible_os_family }}.yml", "vars/var_default.yml"]
+  vars:
+    apache_port: 80
+  roles:
+  - role: apache2
