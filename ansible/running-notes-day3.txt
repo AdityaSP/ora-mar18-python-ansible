@@ -450,3 +450,82 @@ ansnode2                   : ok=6    changed=0    unreachable=0    failed=0
 vagrant@anscontrol:~/mar18$
 vagrant@anscontrol:~/mar18$ cp * /vagrant
 vagrant@anscontrol:~/mar18$
+
+
+##############################################################################
+vagrant@anscontrol:~/mar18$ vi vars.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook vars.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+
+TASK [debug] *******************************************************************
+ok: [ansnode1] => {
+    "msg": "Hello Scott!"
+}
+
+TASK [debug] *******************************************************************
+ok: [ansnode1] => {
+    "msg": "OS family is  Debian!"
+}
+
+TASK [debug] *******************************************************************
+ok: [ansnode1] => {
+    "msg": "picking from file  apache2!"
+}
+
+TASK [command] *****************************************************************
+changed: [ansnode1]
+ [WARNING]: Consider using service module rather than running service
+
+
+TASK [debug] *******************************************************************
+ok: [ansnode1] => {
+    "msg": {
+        "changed": true,
+        "cmd": [
+            "service",
+            "apache2",
+            "status"
+        ],
+        "delta": "0:00:00.035152",
+        "end": "2019-03-20 16:21:28.016115",
+        "rc": 0,
+        "start": "2019-03-20 16:21:27.980963",
+        "stderr": "",
+        "stdout": "● apache2.service - LSB: Apache2 web server\n   Loaded: loaded (/etc/init.d/apache2; bad; vendor preset: enabled)\n  Drop-In: /lib/systemd/system/apache2.service.d\n           └─apache2-systemd.conf\n   Active: active (running) since Wed 2019-03-20 15:28:58 UTC; 52min ago\n     Docs: man:systemd-sysv-generator(8)\n  Process: 2161 ExecStop=/etc/init.d/apache2 stop (code=exited, status=0/SUCCESS)\n  Process: 2192 ExecStart=/etc/init.d/apache2 start (code=exited, status=0/SUCCESS)\n    Tasks: 55\n   Memory: 2.4M\n      CPU: 2.300s\n   CGroup: /system.slice/apache2.service\n           ├─2209 /usr/sbin/apache2 -k start\n           ├─2211 /usr/sbin/apache2 -k start\n           └─2212 /usr/sbin/apache2 -k start\n\nMar 20 15:28:57 ansnode1 systemd[1]: Starting LSB: Apache2 web server...\nMar 20 15:28:57 ansnode1 apache2[2192]:  * Starting Apache httpd web server apache2\nMar 20 15:28:57 ansnode1 apache2[2192]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message\nMar 20 15:28:58 ansnode1 apache2[2192]:  *\nMar 20 15:28:58 ansnode1 systemd[1]: Started LSB: Apache2 web server.",
+        "stdout_lines": [
+            "● apache2.service - LSB: Apache2 web server",
+            "   Loaded: loaded (/etc/init.d/apache2; bad; vendor preset: enabled)",
+            "  Drop-In: /lib/systemd/system/apache2.service.d",
+            "           └─apache2-systemd.conf",
+            "   Active: active (running) since Wed 2019-03-20 15:28:58 UTC; 52min ago",
+            "     Docs: man:systemd-sysv-generator(8)",
+            "  Process: 2161 ExecStop=/etc/init.d/apache2 stop (code=exited, status=0/SUCCESS)",
+            "  Process: 2192 ExecStart=/etc/init.d/apache2 start (code=exited, status=0/SUCCESS)",
+            "    Tasks: 55",
+            "   Memory: 2.4M",
+            "      CPU: 2.300s",
+            "   CGroup: /system.slice/apache2.service",
+            "           ├─2209 /usr/sbin/apache2 -k start",
+            "           ├─2211 /usr/sbin/apache2 -k start",
+            "           └─2212 /usr/sbin/apache2 -k start",
+            "",
+            "Mar 20 15:28:57 ansnode1 systemd[1]: Starting LSB: Apache2 web server...",
+            "Mar 20 15:28:57 ansnode1 apache2[2192]:  * Starting Apache httpd web server apache2",
+            "Mar 20 15:28:57 ansnode1 apache2[2192]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message",
+            "Mar 20 15:28:58 ansnode1 apache2[2192]:  *",
+            "Mar 20 15:28:58 ansnode1 systemd[1]: Started LSB: Apache2 web server."
+        ],
+        "warnings": [
+            "Consider using service module rather than running service"
+        ]
+    }
+}
+
+PLAY RECAP *********************************************************************
+ansnode1                   : ok=6    changed=1    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
