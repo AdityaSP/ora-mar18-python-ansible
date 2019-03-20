@@ -1,0 +1,15 @@
+- name: "Install {{ package_name }}"
+  package:
+    name: "{{ package_name }}"
+- name: "Start the service"
+  service:
+    name: "{{ package_name }}"
+    enabled: yes
+    state: started
+- name: "Change port number"
+  lineinfile:
+    dest: "/etc/apache2/ports.conf"
+    regexp: "^Listen"
+    line: "Listen {{ apache_port }}"
+  notify: "restart {{ package_name }}"
+

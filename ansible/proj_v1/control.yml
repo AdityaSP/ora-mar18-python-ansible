@@ -1,0 +1,13 @@
+- hosts: control
+  gather_facts: no
+  become: true
+  tasks:
+  - name: "install git"
+    apt:
+      name: git
+      update_cache: no
+  - name: "Clone code"
+    git:
+      dest: "/tmp/code"
+      repo: "https://github.com/AdityaSP/htmlonly.git"
+

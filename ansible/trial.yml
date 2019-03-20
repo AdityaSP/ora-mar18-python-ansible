@@ -1,0 +1,7 @@
+- hosts: anscontrol
+  become: true
+  tasks:
+  - apt:
+      update_cache: yes
+    register: output
+  - debug: msg="{{ output }}"

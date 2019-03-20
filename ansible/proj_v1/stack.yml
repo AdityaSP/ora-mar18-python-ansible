@@ -1,0 +1,11 @@
+#- hosts: all
+#  become: true
+#  tasks:
+#  - name: "Update Cache"
+#    apt:
+#      cache_valid_time: 36000
+#      update_cache: yes
+#    when: ansible_os_family == 'Debian'
+
+- include: control.yml 
+- include: nodes.yml 

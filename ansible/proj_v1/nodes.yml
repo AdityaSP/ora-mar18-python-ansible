@@ -1,0 +1,18 @@
+- hosts: nodes
+  become: true
+  vars_files:
+  - ["vars/var_{{ ansible_os_family }}.yml", "vars/var_default.yml"]
+  vars:
+    apache_port: 80
+  tasks:
+  - include: apache.yml
+  - name: "Deploy code"
+    copy:
+      src: "/tmp/code/mypage.html"
+      dest: "/var/www/html"
+  handlers:
+  - name: "restart {{ package_name }}"
+    service:
+      name: "{{ package_name }}"
+      state: restarted
+
