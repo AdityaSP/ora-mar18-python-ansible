@@ -1,0 +1,16 @@
+[ctrl]
+control ansible_connection=local
+
+[database]
+db
+
+[webserver]
+web
+web01
+
+[applayer:children]
+database
+webserver
+
+[loadbalancer]
+lb

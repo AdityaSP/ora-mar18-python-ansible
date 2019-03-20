@@ -1,0 +1,51 @@
+---
+- hosts: webserver
+  gather_facts: no
+  become: true
+  tasks:
+    - name: "Restart apache"
+      service: name='apache2' state=restarted
+      changed_when: true
+      tags:
+       - restart
+
+    - name: "Stop apache"
+      service: name='apache2' state=stopped
+      changed_when: true
+      tags:
+       - stop
+    - name: "Start apache"
+      service: name='apache2' state=started
+      changed_when: true
+      tags:
+       - start
+
+- hosts: database
+  gather_facts: no
+  become: true
+  tasks:
+    - name: "Restart mysql"
+      service: name='mysql' state=restarted
+      changed_when: true
+      tags:
+       - restart
+    - name: "Stop mysql"
+      service: name='mysql' state=stopped
+      changed_when: true
+      tags:
+       - stop
+    - name: "Start mysql"
+      service: name='mysql' state=started
+      changed_when: true
+      tags:
+       - start
+   
+- hosts: loadbalancer
+  gather_facts: no
+  become: true
+  tasks:
+    - name: "Restart haproxy"
+      service: name='haproxy' state=restarted
+      changed_when: true
+      tags:
+       - restart

@@ -1,0 +1,24 @@
+---
+- hosts: ctrl
+  gather_facts: no
+  become: true
+  tasks:
+  - name: "install curl"
+    apt: update_cache=yes cache_valid_time=36000 name=curl
+
+  - name: "install git"
+    apt: update_cache=no name=git
+
+  - name: "Get code from git"
+    git:
+      repo: "https://github.com/AdityaSP/ansiblecode"
+      dest: "/tmp/projectcode"
+
+- hosts: webserver
+  become: true
+  tasks:
+  - name: "Copy the files to server"
+    copy:
+      src: "/tmp/projectcode/server/"
+      dest: "/var/www/html/myapp/"
+      

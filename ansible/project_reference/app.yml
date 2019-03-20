@@ -1,0 +1,37 @@
+---
+- hosts: webserver
+  gather_facts: no
+  become: true
+  tasks:
+  - name: "Change port number"
+    lineinfile: dest="/etc/apache2/ports.conf" regexp=^Listen line="Listen 9090"
+    notify: "Restart apache"
+
+  handlers:
+  - include: apache_handler.yml
+
+- hosts: database
+  gather_facts: no
+  become: true
+  tasks:
+
+  - name: "Create database"
+    mysql_db: name=demodb state=present
+
+  - name: "Create user"
+    mysql_user: name=demo password=demo priv=demodb.*:ALL host='%' state=present
+
+  - name: "Copy sql"
+    copy:
+      src: "/tmp/projectcode/db/createtable.sql"
+      dest: "/tmp/"
+
+  - name: "Use mysql_db to create seed data"
+    mysql_db:
+      login_user: demo
+      login_password: demo
+      name: demodb
+      state: import
+      target: /tmp/createtable.sql
+    changed_when: false
+

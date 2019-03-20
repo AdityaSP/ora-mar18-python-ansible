@@ -1,0 +1,13 @@
+- name: "install mysql-server"
+  apt: name=mysql-server update_cache=yes cache_valid_time=36000 state=present
+  notify: "Restart mysql server"
+
+- name: "install python-mysqldb"
+  apt: name=python-mysqldb update_cache=no state=present
+
+- name: "Allow binding from other servers"
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    regexp: ^bind-address
+    line: "bind-address = 0.0.0.0"
+  notify: "Restart mysql server"

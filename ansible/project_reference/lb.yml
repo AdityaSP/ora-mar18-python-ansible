@@ -1,0 +1,8 @@
+---
+- hosts: loadbalancer
+  become: true
+  vars:
+   - SERVER_PORT: 9090
+  roles:
+   - role: haproxy_config
+  
