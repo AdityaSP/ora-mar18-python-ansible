@@ -153,3 +153,300 @@ ansnode1                   : ok=6    changed=2    unreachable=0    failed=0
 ansnode2                   : ok=6    changed=2    unreachable=0    failed=0
 
 vagrant@anscontrol:~/mar18$
+
+############################################################################################
+
+vagrant@anscontrol:~/mar18$ grep ansible_os_family /tmp/output
+        "ansible_os_family": "Debian",
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  vars_files:
+  - "var_{{ ansible_os_family }}.yml"
+  vars:
+    username: Scott
+  tasks:
+  - debug: msg="Hello {{ username }}!"
+  - debug: msg="OS family is  {{ ansible_os_family }}!"
+  - debug: msg="picking from file  {{ package_name }}!"
+
+vagrant@anscontrol:~/mar18$ cat > var_Debian.yml
+package_name: apache2
+^C
+vagrant@anscontrol:~/mar18$ cat > var_Rhel.yml
+package_name: httpd
+^C
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cat var_Debian.yml
+package_name: apache2
+vagrant@anscontrol:~/mar18$ cat var_Rhel.yml
+package_name: httpd
+vagrant@anscontrol:~/mar18$ cat var
+cat: var: No such file or directory
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  vars_files:
+  - "var_{{ ansible_os_family }}.yml"
+  vars:
+    username: Scott
+  tasks:
+  - debug: msg="Hello {{ username }}!"
+  - debug: msg="OS family is  {{ ansible_os_family }}!"
+  - debug: msg="picking from file  {{ package_name }}!"
+
+vagrant@anscontrol:~/mar18$ vi vars.yml
+vagrant@anscontrol:~/mar18$ cp var_Debian.yml var_default.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cat var_*
+package_name: apache2
+package_name: apache2
+package_name: httpd
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cat var_Debian.yml
+package_name: apache2
+vagrant@anscontrol:~/mar18$ cat var_Rhel.yml
+package_name: httpd
+vagrant@anscontrol:~/mar18$ cat var_default.yml
+package_name: apache2
+vagrant@anscontrol:~/mar18$ cat vars.yml
+- hosts: anscontrol
+  vars_files:
+  - ["var_{{ ansible_os_family }}.yml", "var_default.yml"]
+  vars:
+    username: Scott
+  tasks:
+  - debug: msg="Hello {{ username }}!"
+  - debug: msg="OS family is  {{ ansible_os_family }}!"
+  - debug: msg="picking from file  {{ package_name }}!"
+
+vagrant@anscontrol:~/mar18$ ansible vars.yml
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+Usage: ansible <host-pattern> [options]
+
+Options:
+  -a MODULE_ARGS, --args=MODULE_ARGS
+                        module arguments
+  --ask-become-pass     ask for privilege escalation password
+  -k, --ask-pass        ask for connection password
+  --ask-su-pass         ask for su password (deprecated, use become)
+  -K, --ask-sudo-pass   ask for sudo password (deprecated, use become)
+  --ask-vault-pass      ask for vault password
+  -B SECONDS, --background=SECONDS
+                        run asynchronously, failing after X seconds
+                        (default=N/A)
+  -b, --become          run operations with become (nopasswd implied)
+  --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | runas |
+                        doas ]
+  --become-user=BECOME_USER
+                        run operations as this user (default=root)
+  -C, --check           don't make any changes; instead, try to predict some
+                        of the changes that may occur
+  -c CONNECTION, --connection=CONNECTION
+                        connection type to use (default=smart)
+  -D, --diff            when changing (small) files and templates, show the
+                        differences in those files; works great with --check
+  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
+                        set additional variables as key=value or YAML/JSON
+  -f FORKS, --forks=FORKS
+                        specify number of parallel processes to use
+                        (default=5)
+  -h, --help            show this help message and exit
+  -i INVENTORY, --inventory-file=INVENTORY
+                        specify inventory host path
+                        (default=/home/vagrant/mar18/hosts) or comma separated
+                        host list
+  -l SUBSET, --limit=SUBSET
+                        further limit selected hosts to an additional pattern
+  --list-hosts          outputs a list of matching hosts; does not execute
+                        anything else
+  -m MODULE_NAME, --module-name=MODULE_NAME
+                        module name to execute (default=command)
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        specify path(s) to module library (default=None)
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILE
+                        new vault password file for rekey
+  -o, --one-line        condense output
+  --output=OUTPUT_FILE  output file name for encrypt or decrypt; use - for
+                        stdout
+  -P POLL_INTERVAL, --poll=POLL_INTERVAL
+                        set the poll interval if using -B (default=15)
+  --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
+                        use this file to authenticate the connection
+  --scp-extra-args=SCP_EXTRA_ARGS
+                        specify extra arguments to pass to scp only (e.g. -l)
+  --sftp-extra-args=SFTP_EXTRA_ARGS
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        -l)
+  --ssh-common-args=SSH_COMMON_ARGS
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        ProxyCommand)
+  --ssh-extra-args=SSH_EXTRA_ARGS
+                        specify extra arguments to pass to ssh only (e.g. -R)
+  -S, --su              run operations with su (deprecated, use become)
+  -R SU_USER, --su-user=SU_USER
+                        run operations with su as this user (default=root)
+                        (deprecated, use become)
+  -s, --sudo            run operations with sudo (nopasswd) (deprecated, use
+                        become)
+  -U SUDO_USER, --sudo-user=SUDO_USER
+                        desired sudo user (default=root) (deprecated, use
+                        become)
+  --syntax-check        perform a syntax check on the playbook, but do not
+                        execute it
+  -T TIMEOUT, --timeout=TIMEOUT
+                        override the connection timeout in seconds
+                        (default=10)
+  -t TREE, --tree=TREE  log output to this directory
+  -u REMOTE_USER, --user=REMOTE_USER
+                        connect as this user (default=None)
+  --vault-password-file=VAULT_PASSWORD_FILE
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+ERROR! No argument passed to command module (did you mean to run ansible-playbook?)
+vagrant@anscontrol:~/mar18$ ansible-playbook vars.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [anscontrol]
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "Hello Scott!"
+}
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "OS family is  Debian!"
+}
+
+TASK [debug] *******************************************************************
+ok: [anscontrol] => {
+    "msg": "picking from file  apache2!"
+}
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=4    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts         ping.yml        var_default.yml  vars.yml
+file.yml     maintain.yml  var_Debian.yml  var_Rhel.yml     web.yml
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+ERROR! 'vars_file' is not a valid attribute for a Play
+
+The error appears to have been in '/home/vagrant/mar18/web.yml': line 23, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+- hosts: nodes
+  ^ here
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=6    changed=0    unreachable=0    failed=0
+ansnode2                   : ok=6    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$ vi web.yml
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ ls
+ansible.cfg  hosts         ping.yml        var_default.yml  vars.yml
+file.yml     maintain.yml  var_Debian.yml  var_Rhel.yml     web.yml
+vagrant@anscontrol:~/mar18$ ansible-playbook web.yml
+
+PLAY ***************************************************************************
+
+TASK [Update Cache] ************************************************************
+ok: [anscontrol]
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY ***************************************************************************
+
+TASK [install git] *************************************************************
+ok: [anscontrol]
+
+TASK [Clone code] **************************************************************
+ok: [anscontrol]
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Install apache2] *********************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Start the service] *******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Change port number] ******************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+TASK [Deploy code] *************************************************************
+ok: [ansnode1]
+ok: [ansnode2]
+
+PLAY RECAP *********************************************************************
+anscontrol                 : ok=3    changed=0    unreachable=0    failed=0
+ansnode1                   : ok=6    changed=0    unreachable=0    failed=0
+ansnode2                   : ok=6    changed=0    unreachable=0    failed=0
+
+vagrant@anscontrol:~/mar18$
+vagrant@anscontrol:~/mar18$ cp * /vagrant
+vagrant@anscontrol:~/mar18$
