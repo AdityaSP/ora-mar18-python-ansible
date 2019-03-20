@@ -21,18 +21,20 @@
       repo: "https://github.com/AdityaSP/htmlonly.git"
  
 - hosts: nodes
-  gather_facts: no
   become: true
+  vars_files:
+  - ["var_{{ ansible_os_family }}.yml", "var_default.yml"]
   vars:
     apache_port: 80
   tasks:
-  - name: "Install apache2"
-    apt:
-      name: apache2
-      update_cache: no
+  # debian --> apt-get install apache2, yum install apache2
+  - name: "Install {{ package_name }}"
+    package:
+      name: "{{ package_name }}"
+
   - name: "Start the service"
     service:
-      name: apache2
+      name: "{{ package_name }}"
       enabled: yes
       state: started
   - name: "Change port number"
@@ -40,13 +42,13 @@
       dest: "/etc/apache2/ports.conf"
       regexp: "^Listen"
       line: "Listen {{ apache_port }}"
-    notify: "restart apache2"
+    notify: "restart {{ package_name }}"
   - name: "Deploy code"
     copy:
       src: "/tmp/code/mypage.html"
       dest: "/var/www/html"
   handlers: 
-  - name: "restart apache2"
+  - name: "restart {{ package_name }}"
     service:
-      name: apache2
+      name: "{{ package_name }}"
       state: restarted
